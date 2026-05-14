@@ -56,7 +56,7 @@ DEFLATOR_COL_PREFIX = "GDP Deflator"
 # %%
 # DF 
 # can't use drop function in read_excel
-df = pd.read_excel("PSF_aggregates_databank_Mar_EFO.xlsx", sheet_name="Aggregates (£bn)", skiprows=[0,1,2], skipfooter=4, na_values=["-"])
+df = pd.read_excel(SOURCE_FILE, sheet_name=SHEET_NAME, skiprows=SKIPROWS, skipfooter=SKIPFOOTER, na_values=["-"])
 # Drop column 0
 # axis=1 means drop column, axis=0 means drop row. or axis="columns"
 df = df.drop(df.columns[0], axis=1)
