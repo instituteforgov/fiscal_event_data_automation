@@ -27,11 +27,12 @@ Notes
 
 # %%
 import pandas as pd
+import os 
 
 # %%
 # Set constants
 
-SOURCE_FILE = "PSF_aggregates_databank_Mar_EFO.xlsx"
+SOURCE_FILE = "C:/Users/"+os.getenv("USERNAME")+"/OneDrive - INSTITUTE FOR GOVERNMENT/Data - General/Public finances/OBR/EFOs/March 2026/PSF_aggregates_databank_Mar_EFO.xlsx"
 SHEET_NAME = "Aggregates (£bn)"
 SKIPROWS = [0, 1, 2]
 SKIPFOOTER = 4
