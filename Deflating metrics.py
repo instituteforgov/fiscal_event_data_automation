@@ -119,3 +119,9 @@ check_row
 df_measures_deflated
 # %%
 deflator_base
+# %%
+df.to_csv("output/cleaned_data.csv", index=False)
+# %%
+
+df_measures_deflated.to_csv("outputs/cleaned_data.csv", index=False)
+
