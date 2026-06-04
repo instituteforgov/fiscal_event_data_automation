@@ -1,25 +1,20 @@
-# Template repo - Python
+# Fiscal event data automation in Python
 
-Add a short (1–5-line) description of the repo here.
 
-E.g.
+## Description
+This repository automates the extraction and analysis of data from OBR Economic and Fiscal Outlook (EFO) publications following fiscal events. The workflow uses Python to process data and export outputs for further analysis.
 
-> A template that can be used for creating repos for Python projects  
->  
-> This README sets out a structure that should be used in READMEs. Optional sections in this README template are marked **[optional]** - sometimes with notes on when these may apply. Note that this is a minimal template - other sections should be added where they are of use. Examples are marked using blockquotes (`>`) - remove these when replicating the examples
+## Workflow
+1. Extract and clean data from source files (e.g. EFO datasets)
+2. Process and transform data using Python (pandas)
+3. Export cleaned outputs to CSV
+4. Analyse outputs in Excel (including using Microsoft Copilot)
+
+
 
 ## Related repositories
 
-Add a link to related repos where the code relies on code or data stemming from another repo, indicating whether the repo is public 🔓 or private 🔒.
-
-E.g.
-
-> - 🔒 [IfG Ministers Database - private repo](https://github.com/instituteforgov/ifg-ministers-database-private/): Holds the majority of code and resources for the IfG Ministers Database project  
->  
->    In several places, identifiers used in this repo have been aligned with those used in the IfG Ministers Database - described in further detail below  
->  
-> - 🔓 [IfG Ministers Database - public repo](https://github.com/instituteforgov/ifg-ministers-database-public/): Holds the public element of the IfG Ministers Database project
-> - 🔓 [GOV.UK organisations](https://github.com/instituteforgov/govuk_organisations) Experimental work to see whether it's possible to track organisational histories using organisations data from the GOV.UK API
+n/a
 
 ## Project structure [optional]
 
