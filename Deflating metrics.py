@@ -22,12 +22,9 @@ Notes
     - Intended as a preprocessing step for downstream analysis rather
       than for direct publication.
 """
-
-
-
 # %%
 import pandas as pd
-import os 
+import os
 
 # %%
 # Set constants
@@ -37,8 +34,8 @@ SHEET_NAME = "Aggregates (£bn)"
 SKIPROWS = [0, 1, 2]
 SKIPFOOTER = 4
 
-MINIMUM_EXPECTED_YEAR="1946-47"
-MAXIMUM_EXPECTED_YEAR="2030-31" 
+MINIMUM_EXPECTED_YEAR = "1946-47"
+MAXIMUM_EXPECTED_YEAR = "2030-31"
 BASE_YEAR = "2025-26"
 
 
@@ -55,7 +52,7 @@ EXPECTED_MEASURE_COLS = [
 DEFLATOR_COL_PREFIX = "GDP Deflator"
 
 # %%
-# DF 
+# DF
 # can't use drop function in read_excel
 df = pd.read_excel(SOURCE_FILE, sheet_name=SHEET_NAME, skiprows=SKIPROWS, skipfooter=SKIPFOOTER, na_values=["-"])
 # Drop column 0
@@ -65,7 +62,7 @@ df = df.drop(df.columns[0], axis=1)
 df = df.rename(columns={"Unnamed: 1": "Year"})
 assert "Year" in df.columns, "ERROR: 'Year' column not found after rename — check skiprows or source file structure"
 # Drop rows that come between header and data,  which contain notes and source info rather than data
-df=df.drop(df.index[0,1,2])
+df = df.drop(df.index[0, 1, 2])
 
 # %%
 # ASSERTS
@@ -122,6 +119,4 @@ deflator_base
 # %%
 df.to_csv("output/cleaned_data.csv", index=False)
 # %%
-
 df_measures_deflated.to_csv("outputs/cleaned_data.csv", index=False)
-
