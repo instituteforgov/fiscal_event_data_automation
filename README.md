@@ -66,10 +66,7 @@ E.g.
 > 
 > The hooks run automatically on commit, or manually with `pre-commit run --all-files`.
 
-## License [optional - public repos only]
-
-Add details of the license if the project is public.
-
-E.g.
+## License 
 
 > This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
