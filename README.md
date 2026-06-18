@@ -16,25 +16,14 @@ This repository automates the extraction and analysis of data from OBR Economic 
 
 n/a
 
-## Project structure [optional]
+## Project structure
 
-Add a diagram showing the project structure.
+├── deflating_metrics/
+│   ├── PSF_aggregates_databank_Mar_EFO.xlsx
+│   ├── cleaned_data.csv
+│   ├── deflate_metrics.py
+│   ├── README.md
 
-E.g.
-> ```
-> ├── csps_extraction/
-> │   ├── sql/
-> │   │   ├── compare_organisations_data.sql
-> │   │   ├── select_organisations_data.sql
-> │   ├── compare_data.py
-> │   ├── extract_existing_data.py
-> │   └── utils.py
-> ├── .gitignore
-> ├── .pre-commit-config.yaml
-> ├── LICENSE
-> ├── README.md
-> └── requirements.txt
-> ```
 
 ## Installation [optional - where applicable]
 
@@ -48,34 +37,11 @@ E.g.
 
 ## Scripts
 
-Add details of the substantive scripts in the repo with a brief description, in run order where the order is important.
-
-E.g.
-
-> | File | Description |
-> | ---- | ----------- |
-> | `csps_extraction/extract_existing_data.py` | Reads existing CSPS data and saves to database. |
-> | `csps_extraction/sql/compare_organisations_data.sql` | Replicates the collated organisations data from the CSPS working file, to be used as the basis for comparison in `compare_data.py`. |
-> | `csps_extraction/compare_data.py` | Validates that the augmented SQL output matches the source Excel file. |
-> | `csps_extraction/sql/select_organisations_data.sql` | Script to be used for (re-)insertion of augmented data into Excel. Duplicates `compare_organisations_data.sql`, with the following differences to columns: <ul><li><strong>Organisation type</strong>: Simplified (things of type 'Aggregation'/'Disaggregation'/'Reporting total' reported as such, rather than being reported as 'Combination')</li><li><strong>Organisation aggregation?</strong>: Removed</li><li><strong>IfG core department</strong>: Added</li><li><strong>Latest organisation</strong>: Latest actual organisation always reported, rather than latest determinate organisation</li><li><strong>Latest departmental group</strong>: Latest actual (IfG) departmental group always reported, rather than latest determinate organisation</li></ul> |
-
-## Environment variables [optional - where applicable]
-
-Add details of environment variables here, where the code makes use of any of.
-
-E.g.
-
-> The scripts require the following environment variables to be set:
-> 
-> | Variable | Description |
-> | -------- | ----------- |
-> | `ODBC_DRIVER` | ODBC driver version for SQL Server (e.g., `ODBC Driver 18 for SQL Server`) |
-> | `ODBC_SERVER` | SQL Server hostname |
-> | `ODBC_DATABASE` | Database name |
-> | `ODBC_AUTHENTICATION` | Authentication method (e.g., `ActiveDirectoryServicePrincipal`) |
-> | `AZURE_CLIENT_ID` | Azure service principal client ID used for database authentication |
-> | `AZURE_CLIENT_SECRET` | Azure service principal client secret used for database authentication |
-
+| File | Description |
+| ---- | ----------- |
+| `deflating_metrics.py` | Main script. Reads the input Excel file, cleans the data (including setting constants, trimming years, and reformatting dates), and outputs the cleaned dataset. |
+| `cleaned_data.csv` | Output file produced by the script, containing the final cleaned and formatted data ready for analysis. |
+| `PSF_aggregates_databank_Mar_EFO.xlsx` | Original raw dataset used as the input to the script. |
 
 ## Contributing [optional - repos likely to have multiple contributors]
 
