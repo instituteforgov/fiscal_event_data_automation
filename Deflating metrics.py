@@ -116,7 +116,23 @@ check_row
 df_measures_deflated
 # %%
 deflator_base
+
+
 # %%
-df.to_csv("output/cleaned_data.csv", index=False)
+def replace_hyphen_with_slash(df):
+    """Replace hyphens with forward slashes in the Year column of a DataFrame."""
+    df = df.copy()
+    df["Year"] = df["Year"].str.replace("-", "/", regex=False)
+    return df
+
+
+def drop_empty_rows(df):
+    """Drop rows where all columns except Year contain NaN (e.g. pre-1955/56 rows with no data)."""
+    measure_cols = [col for col in df.columns if col != "Year"]
+    return df.dropna(subset=measure_cols, how="all").reset_index(drop=True)
+
+
 # %%
-df_measures_deflated.to_csv("outputs/cleaned_data.csv", index=False)
+df_measures_deflated.pipe(drop_empty_rows).pipe(replace_hyphen_with_slash).to_csv("outputs/cleaned_data.csv", index=False)
+
+# %%
