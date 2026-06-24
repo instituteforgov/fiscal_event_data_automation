@@ -18,11 +18,17 @@ n/a
 
 ## Project structure
 
-├── deflating_metrics/
-│   ├── PSF_aggregates_databank_Mar_EFO.xlsx
+├── scripts/
+│   ├── .vscode/
+│       ├── settings.json
+├── fiscal_event_data_automation
+├── outputs/
 │   ├── cleaned_data.csv
-│   ├── deflate_metrics.py
-│   ├── README.md
+├── .gitignore
+├── pre-commit-config.yaml
+├── Deflating metrics.py
+├── LICENSE
+├── README.md
 
 
 ## Installation [optional - where applicable]
