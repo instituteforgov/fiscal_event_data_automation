@@ -39,18 +39,19 @@ SKIPFOOTER = 4
 MINIMUM_EXPECTED_YEAR = "1946-47"
 MAXIMUM_EXPECTED_YEAR = "2030-31"
 BASE_YEAR = "2025-26"
-
+OUTPUT_FILE = "outputs/cleaned_data.csv"
 
 EXPECTED_MEASURE_COLS = [
-    "Year",
-    "Public sector current receipts",
-    "Total managed expenditure",
-    "Public sector current expenditure",
-    "Public sector net investment",
-    "Depreciation",
-    "Public sector gross investment",
-    "National account taxes",
+  {
+    "Measure": "Public sector net investment",
+    "Output file name": "public_sector_net_investment_time_series.csv"
+  },
+  {
+    "Measure": "Current budget deficit",
+    "Output file name": "current_budget_deficit_time_series.csv"
+  }
 ]
+
 DEFLATOR_COL_PREFIX = "GDP Deflator"
 
 # %%
@@ -105,6 +106,10 @@ measure_cols = [col for col in df_measures_deflated.columns if col not in ["Year
 df_measures_deflated[measure_cols] = df_measures_deflated[measure_cols].multiply(
     deflator_base / df_measures_deflated[DEFLATOR_COL], axis=0
 )
+
+# %%
+print(df_measures_deflated.head())
+
 # Drop the deflator column now it's no longer needed
 df_measures = df_measures_deflated.drop(columns=[DEFLATOR_COL])
 
