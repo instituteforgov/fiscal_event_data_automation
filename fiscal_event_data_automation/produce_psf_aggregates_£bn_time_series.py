@@ -23,10 +23,11 @@ Notes
       than for direct publication.
 """
 # %%
-from gettext import install
-
 import pandas as pd
 import os
+import fiscal_event_data_automation.utils as utils
+from IPython.display import display
+
 
 # %%
 # Set constants
@@ -42,14 +43,14 @@ BASE_YEAR = "2025-26"
 OUTPUT_FILE = "outputs/cleaned_data.csv"
 
 EXPECTED_MEASURE_COLS = [
-  {
-    "Measure": "Public sector net investment",
-    "Output file name": "public_sector_net_investment_time_series.csv"
-  },
-  {
-    "Measure": "Current budget deficit",
-    "Output file name": "current_budget_deficit_time_series.csv"
-  }
+    {
+        "Measure": "Public sector net investment",
+        "Output file name": "public_sector_net_investment_time_series.csv"
+    },
+    {
+        "Measure": "Current budget deficit",
+        "Output file name": "current_budget_deficit_time_series.csv"
+    }
 ]
 
 DEFLATOR_COL_PREFIX = "GDP Deflator"
@@ -74,7 +75,6 @@ assert df["Year"].max() == MAXIMUM_EXPECTED_YEAR, f"ERROR: Maximum year in data 
 
 # %%
 # SEPARATE DFs
-df_measures = df[EXPECTED_MEASURE_COLS]
 # Detect deflator column dynamically so the year in the title doesn't matter
 deflator_cols = [col for col in df.columns if col.startswith(DEFLATOR_COL_PREFIX)]
 assert len(deflator_cols) == 1, f"ERROR: Expected exactly one GDP Deflator column, found: {deflator_cols}"
@@ -86,63 +86,34 @@ assert (df_deflator["Year"] == BASE_YEAR).any(), f"ERROR: Base year '{BASE_YEAR}
 assert not df_deflator[DEFLATOR_COL].isna().all(), "ERROR: GDP Deflator column is entirely NaN"
 assert (df_deflator[DEFLATOR_COL] != 0).all(), "ERROR: GDP Deflator contains zero values — cannot divide"
 # Check that all columns in EXPECTED_MEASURE_COLS are present in df_measures
-assert set(EXPECTED_MEASURE_COLS).issubset(df.columns), \
-    f"ERROR: Missing expected columns: {set(EXPECTED_MEASURE_COLS) - set(df.columns)}"
+expected_measure_names = set(m["Measure"] for m in EXPECTED_MEASURE_COLS)
+assert expected_measure_names.issubset(df.columns), \
+    f"ERROR: Missing expected columns: {expected_measure_names - set(df.columns)}"
 
 
 deflator_base = df_deflator.loc[df_deflator["Year"] == BASE_YEAR, DEFLATOR_COL].values[0]
-
+# %%
 # CALCULATIONS
 # Merge deflator into df_measures on Year to ensure correct row alignment
-rows_before = len(df_measures)
-df_measures_deflated = df_measures.merge(df_deflator, on="Year", how="left")
-assert len(df_measures_deflated) == rows_before, f"ERROR: Merge changed row count ({rows_before} → {len(df_measures_deflated)}) — check for duplicate Year values"
-# Warn about any years with missing deflator after merge
-missing_deflator_years = df_measures_deflated.loc[df_measures_deflated[DEFLATOR_COL].isna(), "Year"].tolist()
-if missing_deflator_years:
-    print(f"WARNING: No deflator found for these years — those rows will be NaN after rebasing: {missing_deflator_years}")
-# Rebase all measure columns (everything except Year and the deflator)
-measure_cols = [col for col in df_measures_deflated.columns if col not in ["Year", DEFLATOR_COL]]
-df_measures_deflated[measure_cols] = df_measures_deflated[measure_cols].multiply(
-    deflator_base / df_measures_deflated[DEFLATOR_COL], axis=0
-)
+for measure in EXPECTED_MEASURE_COLS:
+    df_measures = df[["Year", measure["Measure"]]]
+    df_measures_deflated, measure_cols = utils.deflate_measures(df_measures, df_deflator, DEFLATOR_COL, deflator_base)
+
+    print(df_measures_deflated.head())
+
+    # Drop the deflator column now it's no longer needed
+    df_measures = df_measures_deflated.drop(columns=[DEFLATOR_COL])
+    # CHECKS
+    # Confirm rebasing applied correctly: 2025-26 values should be unchanged
+    check_row = df_measures_deflated.loc[df_measures_deflated["Year"] == BASE_YEAR, measure_cols]
+    assert check_row[measure["Measure"]].values[0] == df_measures.loc[df_measures["Year"] == BASE_YEAR, measure["Measure"]].values[0], f"ERROR: Rebase check failed for {measure["Measure"]} in base year"
+    # PREVIEWS
+    display(check_row)
+
+    display(df_measures_deflated)
+
+    display(deflator_base)
+
+    df_measures_deflated.pipe(utils.drop_empty_rows).pipe(utils.replace_hyphen_with_slash).to_csv("outputs/cleaned_data.csv", index=False)
 
 # %%
-print(df_measures_deflated.head())
-
-# Drop the deflator column now it's no longer needed
-df_measures = df_measures_deflated.drop(columns=[DEFLATOR_COL])
-
-# %%
-# CHECKS
-# Confirm rebasing applied correctly: 2025-26 values should be unchanged
-check_row = df_measures_deflated.loc[df_measures_deflated["Year"] == BASE_YEAR, measure_cols]
-assert check_row["Public sector current receipts"].values[0] == df_measures.loc[df_measures["Year"] == BASE_YEAR, "Public sector current receipts"].values[0], "ERROR: Rebase check failed for 'Public sector current receipts' in base year"
-
-
-# %%
-# PREVIEWS
-check_row
-# %%
-df_measures_deflated
-# %%
-deflator_base
-
-
-# %%
-def replace_hyphen_with_slash(df):
-    """Replace hyphens with forward slashes in the Year column of a DataFrame."""
-    df = df.copy()
-    df["Year"] = df["Year"].str.replace("-", "/", regex=False)
-    return df
-
-
-def drop_empty_rows(df):
-    """Drop rows where all columns except Year contain NaN (e.g. pre-1955/56 rows with no data)."""
-    measure_cols = [col for col in df.columns if col != "Year"]
-    return df.dropna(subset=measure_cols, how="all").reset_index(drop=True)
-
-
-# %%
-df_measures_deflated.pipe(drop_empty_rows).pipe(replace_hyphen_with_slash).to_csv("outputs/cleaned_data.csv", index=False)
-
