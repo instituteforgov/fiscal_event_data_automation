@@ -8,10 +8,10 @@ Purpose
 Inputs
     - Excel: PSF_aggregates_databank_Mar_EFO.xlsx
         • Sheet: "Aggregates (£bn)"
-        • Columns: public finance aggregates and GDP deflator
+        • Columns: "Public sector net investment", "Current budget deficit", and "GDP Deflator (2024-25=100)"
 
 Outputs
-    - pandas.DataFrame: df_measures
+    - pandas.DataFrame: df_measures_deflated
         • Public finance aggregates rebased to 2025–26 prices
 
 Notes
@@ -19,7 +19,7 @@ Notes
       structure, year coverage, column names, and deflator integrity.
     - Rebasing uses the GDP deflator with base year 2025–26; values in
       the base year should be unchanged after rebasing.
-    - Intended as a preprocessing step for downstream analysis rather
+    - Intended as a preprocessing step for further analysis rather
       than for direct publication.
 """
 # %%
@@ -42,7 +42,7 @@ MAXIMUM_EXPECTED_YEAR = "2030-31"
 BASE_YEAR = "2025-26"
 OUTPUT_FILE = "outputs/cleaned_data.csv"
 
-EXPECTED_MEASURE_COLS = [
+MEASURE_OUTPUTS = [
     {
         "Measure": "Public sector net investment",
         "Output file name": "public_sector_net_investment_time_series.csv"
@@ -57,19 +57,18 @@ DEFLATOR_COL_PREFIX = "GDP Deflator"
 
 # %%
 # DF
-# can't use drop function in read_excel
 df = pd.read_excel(SOURCE_FILE, sheet_name=SHEET_NAME, skiprows=SKIPROWS, skipfooter=SKIPFOOTER, na_values=["-"])
 # Drop column 0
-# axis=1 means drop column, axis=0 means drop row. or axis="columns"
+# axis=1 means drop column, axis=0 means drop row.
 df = df.drop(df.columns[0], axis=1)
 # for both columns and rows, first column/row is 0, second is 1, etc. so to drop first three rows, use index 0,1,2
 df = df.rename(columns={"Unnamed: 1": "Year"})
-assert "Year" in df.columns, "ERROR: 'Year' column not found after rename — check skiprows or source file structure"
 # Drop rows that come between header and data,  which contain notes and source info rather than data
 df = df.drop(df.index[0, 1, 2])
 
 # %%
 # ASSERTS
+assert "Year" in df.columns, "ERROR: 'Year' column not found after rename — check skiprows or source file structure"
 assert df["Year"].min() == MINIMUM_EXPECTED_YEAR, f"ERROR: Minimum year in data ({df['Year'].min()}) does not match expected ({MINIMUM_EXPECTED_YEAR}) — check skiprows or source file structure"
 assert df["Year"].max() == MAXIMUM_EXPECTED_YEAR, f"ERROR: Maximum year in data ({df['Year'].max()}) does not match expected ({MAXIMUM_EXPECTED_YEAR}) — check skiprows or source file structure"
 
@@ -116,4 +115,6 @@ for measure in EXPECTED_MEASURE_COLS:
 
     df_measures_deflated.pipe(utils.drop_empty_rows).pipe(utils.replace_hyphen_with_slash).to_csv("outputs/cleaned_data.csv", index=False)
 
+# %%
+print(df_measures_deflated.head())
 # %%
