@@ -47,11 +47,8 @@ E.g.
 
 ## Scripts
 
-| File | Description |
-| ---- | ----------- |
-| `deflating_metrics.py` | Main script. Reads the input Excel file, cleans the data (including setting constants, trimming years, and reformatting dates), and outputs the cleaned dataset. |
-| `cleaned_data.csv` | Output file produced by the script, containing the final cleaned and formatted data ready for analysis. |
-| `PSF_aggregates_databank_Mar_EFO.xlsx` | Original raw dataset used as the input to the script. |
+| produce_psf_aggregates_£bn_time_series.py | Main script for processing fiscal event data and generating Public Sector Finances (PSF) aggregate outputs. Produces cleaned datasets and analysis outputs.
+| utils.py | Incorporates formula for deflating fiscal data into a reusable function.
 
 ## Contributing [optional - repos likely to have multiple contributors]
 
