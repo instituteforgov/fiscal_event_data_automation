@@ -35,7 +35,7 @@ n/a
 ├── README.md
 
 
-## Installation [optional - where applicable]
+## Installation 
 
 1. Clone the repository.
 2. Install the required Python packages: 
@@ -49,7 +49,7 @@ n/a
 | produce_psf_aggregates_£bn_time_series.py | Main script for processing fiscal event data and generating Public Sector Finances (PSF) aggregate outputs. Produces cleaned datasets and analysis outputs.
 | utils.py | Incorporates formula for deflating fiscal data into a reusable function.
 
-## Contributing [optional - repos likely to have multiple contributors]
+## Contributing 
 
 When making changes to this project:
 
