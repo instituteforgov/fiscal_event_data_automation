@@ -37,13 +37,12 @@ n/a
 
 ## Installation [optional - where applicable]
 
-Where the repo contains a `requirements.txt` file, include the commands to install dependencies using it.
-
-E.g.
-
-> ```bash
-> pip install -r requirements.txt
-> ```
+1. Clone the repository.
+2. Install the required Python packages: 
+> import pandas as pd
+> import os
+> import fiscal_event_data_automation.utils as utils
+> from IPython.display import display
 
 ## Scripts
 
@@ -52,26 +51,30 @@ E.g.
 
 ## Contributing [optional - repos likely to have multiple contributors]
 
-Add a section describing any important information for contributors.
+When making changes to this project:
 
-E.g.
+Verify that the source Excel file structure has not changed, including:
 
-> This project uses `pre-commit` hooks to ensure code quality. To set up:
->
-> 1. Install `pre-commit` on your system if you don't already have it:
->
-    > ```bash
-    > pip install pre-commit
-    > ```
->
-> 1. Set up `pre-commit` in your copy of this project. In the project directory, run:
-    > ```bash
-    > pre-commit install
-    > ```
->
-> Rules that are applied can be found in [`.pre-commit-config.yaml`](.pre-commit-config.yaml).
->
-> The hooks run automatically on commit, or manually with `pre-commit run --all-files`.
+Worksheet name (Aggregates (£bn))
+Header row locations
+Year coverage
+Public finance measure names
+GDP deflator column naming convention
+
+Maintain the existing validation checks and assertions wherever possible. These are designed to detect structural changes in the OBR databank before calculations are performed.
+
+Test any changes to the deflation methodology using the base year (2025-26) and confirm that values in the base year remain unchanged after rebasing.
+
+Where new public finance measures are added, update the MEASURE_OUTPUTS configuration and ensure the resulting outputs are validated before publication or further analysis.
+
+Update this documentation if any changes are made to:
+
+Input data sources
+Expected file structure
+Output formats
+Deflation methodology / base year 
+
+This script is intended as a preprocessing tool for analytical work. Any methodological changes should be reviewed carefully to ensure consistency with OBR source data and existing outputs.
 
 ## License
 
