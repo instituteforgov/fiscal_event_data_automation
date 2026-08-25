@@ -44,11 +44,11 @@ OUTPUT_FILE = "outputs/cleaned_data.csv"
 
 MEASURE_OUTPUTS = [
     {
-        "Measure": "Public sector net investment",
+        "Measure name": "Public sector net investment",
         "Output file name": "public_sector_net_investment_time_series.csv"
     },
     {
-        "Measure": "Current budget deficit",
+        "Measure name": "Current budget deficit",
         "Output file name": "current_budget_deficit_time_series.csv"
     }
 ]
@@ -85,7 +85,7 @@ assert (df_deflator["Year"] == BASE_YEAR).any(), f"ERROR: Base year '{BASE_YEAR}
 assert not df_deflator[DEFLATOR_COL].isna().all(), "ERROR: GDP Deflator column is entirely NaN"
 assert (df_deflator[DEFLATOR_COL] != 0).all(), "ERROR: GDP Deflator contains zero values — cannot divide"
 # Check that all columns in EXPECTED_MEASURE_COLS are present in df_measures
-expected_measure_names = set(m["Measure"] for m in EXPECTED_MEASURE_COLS)
+expected_measure_names = set(m["Measure name"] for m in MEASURE_OUTPUTS)
 assert expected_measure_names.issubset(df.columns), \
     f"ERROR: Missing expected columns: {expected_measure_names - set(df.columns)}"
 
@@ -94,18 +94,17 @@ deflator_base = df_deflator.loc[df_deflator["Year"] == BASE_YEAR, DEFLATOR_COL].
 # %%
 # CALCULATIONS
 # Merge deflator into df_measures on Year to ensure correct row alignment
-for measure in EXPECTED_MEASURE_COLS:
-    df_measures = df[["Year", measure["Measure"]]]
+for measure in MEASURE_OUTPUTS:
+    df_measures = df[["Year", measure["Measure name"]]]
     df_measures_deflated, measure_cols = utils.deflate_measures(df_measures, df_deflator, DEFLATOR_COL, deflator_base)
-
     print(df_measures_deflated.head())
 
     # Drop the deflator column now it's no longer needed
-    df_measures = df_measures_deflated.drop(columns=[DEFLATOR_COL])
+    df_measures_deflated = df_measures_deflated.drop(columns=[DEFLATOR_COL])
     # CHECKS
     # Confirm rebasing applied correctly: 2025-26 values should be unchanged
     check_row = df_measures_deflated.loc[df_measures_deflated["Year"] == BASE_YEAR, measure_cols]
-    assert check_row[measure["Measure"]].values[0] == df_measures.loc[df_measures["Year"] == BASE_YEAR, measure["Measure"]].values[0], f"ERROR: Rebase check failed for {measure["Measure"]} in base year"
+    assert check_row[measure["Measure name"]].values[0] == df_measures.loc[df_measures["Year"] == BASE_YEAR, measure["Measure name"]].values[0], f"ERROR: Rebase check failed for {measure["Measure name"]} in base year"
     # PREVIEWS
     display(check_row)
 
