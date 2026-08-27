@@ -4,6 +4,12 @@
 ## Description
 This repository automates the extraction and analysis of data from OBR Economic and Fiscal Outlook (EFO) publications following fiscal events. The workflow uses Python to process data and export outputs for further analysis.
 
+## Process
+<img width="940" height="543" alt="image" src="https://github.com/user-attachments/assets/e44dedc8-5a92-4ab6-8acd-c23936753f48" />
+
+The content of this repository covers just the steps performed in Python.
+
+
 ## Workflow
 1. Extract and clean data from source files (e.g. EFO datasets)
 2. Process and transform data using Python (pandas)
