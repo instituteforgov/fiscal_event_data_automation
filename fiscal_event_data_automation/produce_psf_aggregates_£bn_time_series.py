@@ -40,7 +40,6 @@ SKIPFOOTER = 4
 MINIMUM_EXPECTED_YEAR = "1946-47"
 MAXIMUM_EXPECTED_YEAR = "2030-31"
 BASE_YEAR = "2025-26"
-OUTPUT_FILE = "outputs/cleaned_data.csv"
 
 MEASURE_OUTPUTS = [
     {
@@ -112,8 +111,5 @@ for measure in MEASURE_OUTPUTS:
 
     display(deflator_base)
 
-    df_measures_deflated.pipe(utils.drop_empty_rows).pipe(utils.replace_hyphen_with_slash).to_csv("outputs/cleaned_data.csv", index=False)
-
-# %%
-print(df_measures_deflated.head())
+    df_measures_deflated.pipe(utils.drop_empty_rows).pipe(utils.replace_hyphen_with_slash).to_csv(f"outputs/{measure["Output file name"]}", index=False)
 # %%
