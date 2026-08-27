@@ -7,7 +7,7 @@ This repository automates the extraction and analysis of data from OBR Economic 
 ## Process
 <img width="940" height="543" alt="image" src="https://github.com/user-attachments/assets/e44dedc8-5a92-4ab6-8acd-c23936753f48" />
 
-
+The content of this repository covers just the steps performed in Python.
 
 
 ## Workflow
