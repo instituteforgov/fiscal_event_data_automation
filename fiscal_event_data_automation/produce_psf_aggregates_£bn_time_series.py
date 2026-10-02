@@ -1,26 +1,16 @@
 
 """
 Purpose
-    Read in PSF aggregate public finance series from the OBR databank,
-    perform structural validation, and rebase selected measures to
-    constant prices using the GDP deflator.
-
+    Read in PSF aggregate public finance series from the OBR databank, perform structural validation, and rebase selected measures to constant prices using the GDP deflator.
 Inputs
-    - Excel: PSF_aggregates_databank_Mar_EFO.xlsx
-        • Sheet: "Aggregates (£bn)"
-        • Columns: "Public sector net investment", "Current budget deficit", and "GDP Deflator (2024-25=100)"
-
+    - xlsx: 'PSF_aggregates_databank_Mar_EFO.xlsx'
 Outputs
-    - pandas.DataFrame: df_measures_deflated
-        • Public finance aggregates rebased to 2025–26 prices
-
+    - csv: 'public_sector_net_investment_time_series.csv'
+    - csv: 'current_budget_deficit_time_series.csv'
 Notes
-    - Script includes defensive assertions to detect changes in file
-      structure, year coverage, column names, and deflator integrity.
-    - Rebasing uses the GDP deflator with base year 2025–26; values in
-      the base year should be unchanged after rebasing.
-    - Intended as a preprocessing step for further analysis rather
-      than for direct publication.
+    - Script includes defensive assertions to detect changes in file structure, year coverage, column names, and deflator integrity.
+    - Rebasing uses the GDP deflator with base year 2025–26; values in the base year should be unchanged after rebasing.
+    - Intended as a preprocessing step for further analysis rather than for direct publication.
 """
 # %%
 import os
