@@ -1,7 +1,5 @@
 # Fiscal event data automation in Python
 
-
-## Description
 This repository automates the extraction and analysis of data from OBR Economic and Fiscal Outlook (EFO) publications following fiscal events. The workflow uses Python to process data and export outputs for further analysis.
 
 ## Process
@@ -9,18 +7,9 @@ This repository automates the extraction and analysis of data from OBR Economic 
 
 The content of this repository covers just the steps performed in Python.
 
-
-## Workflow
-1. Extract and clean data from source files (e.g. EFO datasets)
-2. Process and transform data using Python (pandas)
-3. Export cleaned outputs to CSV
-4. Analyse outputs in Excel (including using Microsoft Copilot)
-
-
-
 ## Related repositories
 
-n/a
+None
 
 ## Project structure
 
@@ -40,44 +29,35 @@ n/a
 
 ## Installation 
 
-1. Clone the repository.
-2. Install the required Python packages: 
-> import pandas as pd
-> import os
-> import fiscal_event_data_automation.utils as utils
-> from IPython.display import display
+```bash
+pip install -r requirements.txt
+```
 
 ## Scripts
 
-| produce_psf_aggregates_£bn_time_series.py | Main script for processing fiscal event data and generating Public Sector Finances (PSF) aggregate outputs. Produces cleaned datasets and analysis outputs.
-| utils.py | Incorporates formula for deflating fiscal data into a reusable function.
+| File | Description |
+| ---- | ----------- |
+| `produce_psf_aggregates_£bn_time_series.py` | Main script for processing fiscal event data and generating Public Sector Finances (PSF) aggregate outputs. Produces cleaned datasets and analysis outputs.
+| `utils.py` | Utility functions call by other scripts.
 
-## Contributing 
+## Contributing
 
-When making changes to this project:
+This project uses `pre-commit` hooks to ensure code quality. To set up:
 
-Verify that the source Excel file structure has not changed, including:
+1. Install `pre-commit` on your system if you don't already have it:
 
-Worksheet name (Aggregates (£bn))
-Header row locations
-Year coverage
-Public finance measure names
-GDP deflator column naming convention
+    ```bash
+    pip install pre-commit
+    ```
 
-Maintain the existing validation checks and assertions wherever possible. These are designed to detect structural changes in the OBR databank before calculations are performed.
+1. Set up `pre-commit` in your copy of this project. In the project directory, run:
+    ```bash
+    pre-commit install
+    ```
 
-Test any changes to the deflation methodology using the base year (2025-26) and confirm that values in the base year remain unchanged after rebasing.
+Rules that are applied can be found in [`.pre-commit-config.yaml`](.pre-commit-config.yaml).
 
-Where new public finance measures are added, update the MEASURE_OUTPUTS configuration and ensure the resulting outputs are validated before publication or further analysis.
-
-Update this documentation if any changes are made to:
-
-Input data sources
-Expected file structure
-Output formats
-Deflation methodology / base year 
-
-This script is intended as a preprocessing tool for analytical work. Any methodological changes should be reviewed carefully to ensure consistency with OBR source data and existing outputs.
+The hooks run automatically on commit, or manually with `pre-commit run --all-files`.
 
 ## License
 
