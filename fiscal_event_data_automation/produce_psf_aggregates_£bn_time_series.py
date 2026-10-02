@@ -23,11 +23,12 @@ Notes
       than for direct publication.
 """
 # %%
-import pandas as pd
 import os
-import fiscal_event_data_automation.utils as utils
-from IPython.display import display
 
+from IPython.display import display
+import pandas as pd
+
+import fiscal_event_data_automation.utils as utils
 
 # %%
 # Set constants
