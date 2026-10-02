@@ -24,21 +24,18 @@ n/a
 
 ## Project structure
 
+```
 ├── scripts/
-│   ├── .vscode/
-│       ├── settings.json
-│   ├── fiscal_event_data_automation/
-│       ├── __pycache__/
-│            ├── utils.cpython-314.pyc
+│   └── fiscal_event_data_automation/
 │       ├── produce_psf_aggregates_£bn_time_series.py
-│       ├── utils.py
+│       └── utils.py
 ├── outputs/
-│   ├── cleaned_data.csv
-│   ├── copilot output.xlsx
+│   └── <various>.csv
 ├── .gitignore
 ├── .pre-commit-config.yaml
 ├── LICENSE
-├── README.md
+└── README.md
+```
 
 
 ## Installation 
