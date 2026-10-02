@@ -1,4 +1,4 @@
-
+# %%
 """
 Purpose
     Read in PSF aggregate public finance series from the OBR databank, perform structural validation, and rebase selected measures to constant prices using the GDP deflator.
@@ -12,7 +12,7 @@ Notes
     - Rebasing uses the GDP deflator with base year 2025–26; values in the base year should be unchanged after rebasing.
     - Intended as a preprocessing step for further analysis rather than for direct publication.
 """
-# %%
+
 import os
 
 from IPython.display import display
@@ -22,8 +22,7 @@ import fiscal_event_data_automation.utils as utils
 
 # %%
 # Set constants
-
-SOURCE_FILE = "C:/Users/"+os.getenv("USERNAME")+"/OneDrive - INSTITUTE FOR GOVERNMENT/Data - General/Public finances/OBR/EFOs/March 2026/PSF_aggregates_databank_Mar_EFO.xlsx"
+SOURCE_FILE = "C:/Users/" + os.getenv("USERNAME") + "/INSTITUTE FOR GOVERNMENT/Data - General/Public finances/OBR/EFOs/March 2026/PSF_aggregates_databank_Mar_EFO.xlsx"
 SHEET_NAME = "Aggregates (£bn)"
 SKIPROWS = [0, 1, 2]
 SKIPFOOTER = 4
