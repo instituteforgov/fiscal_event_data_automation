@@ -68,11 +68,14 @@ deflator_cols = [col for col in df.columns if col.startswith(DEFLATOR_COL_PREFIX
 assert len(deflator_cols) == 1, f"ERROR: Expected exactly one GDP Deflator column, found: {deflator_cols}"
 DEFLATOR_COL = deflator_cols[0]
 df_deflator = df[["Year", DEFLATOR_COL]]
+
 # Check base year exists in deflator
 assert (df_deflator["Year"] == BASE_YEAR).any(), f"ERROR: Base year '{BASE_YEAR}' not found in deflator data"
+
 # Check no zero or NaN deflator values (would cause division errors)
 assert not df_deflator[DEFLATOR_COL].isna().all(), "ERROR: GDP Deflator column is entirely NaN"
 assert (df_deflator[DEFLATOR_COL] != 0).all(), "ERROR: GDP Deflator contains zero values — cannot divide"
+
 # Check that all columns in EXPECTED_MEASURE_COLS are present in df_measures
 expected_measure_names = set(m["Measure name"] for m in MEASURE_OUTPUTS)
 assert expected_measure_names.issubset(df.columns), \
@@ -80,6 +83,7 @@ assert expected_measure_names.issubset(df.columns), \
 
 
 deflator_base = df_deflator.loc[df_deflator["Year"] == BASE_YEAR, DEFLATOR_COL].values[0]
+
 # %%
 # CALCULATIONS
 # Merge deflator into df_measures on Year to ensure correct row alignment
@@ -90,16 +94,14 @@ for measure in MEASURE_OUTPUTS:
 
     # Drop the deflator column now it's no longer needed
     df_measures_deflated = df_measures_deflated.drop(columns=[DEFLATOR_COL])
-    # CHECKS
-    # Confirm rebasing applied correctly: 2025-26 values should be unchanged
+
+    # Confirm rebasing applied correctly: base year values should be unchanged
     check_row = df_measures_deflated.loc[df_measures_deflated["Year"] == BASE_YEAR, measure_cols]
     assert check_row[measure["Measure name"]].values[0] == df_measures.loc[df_measures["Year"] == BASE_YEAR, measure["Measure name"]].values[0], f"ERROR: Rebase check failed for {measure["Measure name"]} in base year"
-    # PREVIEWS
-    display(check_row)
 
+    # Preview
     display(df_measures_deflated)
 
-    display(deflator_base)
-
     df_measures_deflated.pipe(utils.drop_empty_rows).pipe(utils.replace_hyphen_with_slash).to_csv(f"outputs/{measure["Output file name"]}", index=False)
+
 # %%
