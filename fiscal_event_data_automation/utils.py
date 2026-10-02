@@ -1,6 +1,3 @@
-# %%
-# CALCULATIONS
-# Merge deflator into df_measures on Year to ensure correct row alignment
 def deflate_measures(df_measures, df_deflator, DEFLATOR_COL, deflator_base):
     rows_before = len(df_measures)
     df_measures_deflated = df_measures.merge(df_deflator, on="Year", how="left")
@@ -17,7 +14,6 @@ def deflate_measures(df_measures, df_deflator, DEFLATOR_COL, deflator_base):
     return df_measures_deflated, measure_cols
 
 
-# %%
 def replace_hyphen_with_slash(df):
     """Replace hyphens with forward slashes in the Year column of a DataFrame."""
     df = df.copy()
